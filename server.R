@@ -1,11 +1,12 @@
-library(shiny)
-data(data)
-server <- function(input, output) {
-  output$distPlot <- renderPlot({
-    x <- faithful$waiting
-    bin <- seq(min(x), max(x), length.out = input$bins + 1)
-    hist(x, breaks = bins, col = "$007bc2", border = "white", 
-         xlab = "Waiting time to next eruption (mins)",
-         main = "histogram of wait time")
+data(covid_19) #input data here may not be necessary.
+
+#create server function
+function(input, output) {
+  #create data frame based on intended data
+  selectedData <- reactive({
+    covid_19[,c(input$xcol, input$ycol)]
   })
-}
+#create plot
+  output$plot1 <- renderPlot({
+    plot(selectedData())
+  })
