@@ -1,35 +1,20 @@
-library(tidyverse)
-library(ggplot2)
-library(bslib)
 library(shiny)
+covid_19 <<- read.csv("covid_19.csv")[,c(1,6,8)]
 
-vars <- setdiff(unique(mpg$class), "Class")
-vars.2 <- setdiff(unique(mpg$manufacturer), "Manufacturer")
-
-#create server function
-server <- function(input, output, session) {
-  
-  output$table <- renderTable(
-    mpg %>% count(manufacturer, class)
-  )
-  output$hist <- renderPlot(
-    hist(mpg$hwy[(mpg$class==input$Class) & (mpg$manufacturer==input$Manufacturer)],
-         main = paste(input$Manufacturer,"", input$Class),
-         ylab = "Frequency",
-         xlab = "Highway miles per gallon")
-  )}
 
 ui <- fluidPage(
-  titlePanel("Highway MPG by Class"),
-  fluidRow(
-    column(2,
-      selectInput("Class","class", vars),
-      selectInput("Manufacturer","manufacturer", vars.2)),
-    column(5,
-      plotOutput('hist'),
-      tableOutput('table')
-      )
+  covid_19 <- read.csv("covid_19.csv")[,c(1,6,8)],
+  titlePanel("Covid 19 cases"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("country","cases", 0, 100000, c(25, 40)),
+      selectInput("countryInput","country",
+                  choices = covid_19$country)
     )
+  )
 )
+
+#create server function
+server <- function(input, output) {}
 
 shinyApp(ui = ui, server = server)
