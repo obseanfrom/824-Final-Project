@@ -1,6 +1,7 @@
 library(tidyverse)
 library(ggplot2)
 library(shiny)
+library(DT)
 
 vars <- setdiff(unique(mpg$class), "Class")
 vars.2 <- setdiff(unique(mpg$manufacturer), "Manufacturer")
@@ -13,11 +14,9 @@ server <- function(input, output, session) {
   current.data.2 <- reactive({
     data.1 <- subset(mpg, manufacturer == input$Manufacturer)
   })
-  output$table <- renderTable(
-    mpg %>% 
-      group_by(manufacturer) %>%
-      pivot_longer(names_to = class, values_to = manufacturer)
-  )
+  output$table <- renderDT({
+    as.data.frame(table(mpg$class, mpg$manufacturer, dnn = c("class","manufacturer")))
+  })
   output$hist <- renderPlot(
     ggplot(current.data()) + 
       geom_histogram(aes(x = hwy)) +
@@ -41,7 +40,7 @@ ui <- fluidPage(
     column(9,
       plotOutput('hist'),
       plotOutput('bar'),
-      tableOutput('table')
+      DTOutput('table')
       )
     )
 )
