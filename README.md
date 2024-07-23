@@ -6,6 +6,7 @@ tidyverse
 ggplot2
 shiny
 DT
+ggthemes
 
 Initial project plan was to create a visualization using a covid-19 dataset to display cases by country or similar. This idea had to be scrapped early as the dataset was not sufficient to complete this goal in a satisfying manner. I pivoted my work to displaying.
 
