@@ -2,6 +2,7 @@ library(tidyverse)
 library(ggplot2)
 library(shiny)
 library(DT)
+library(ggthemes)
 
 vars <- setdiff(unique(mpg$class), "Class")
 vars.2 <- setdiff(unique(mpg$manufacturer), "Manufacturer")
@@ -21,13 +22,17 @@ server <- function(input, output, session) {
     ggplot(current.data()) + 
       geom_histogram(aes(x = hwy)) +
       ggtitle(paste(input$Class, "highway miles per gallon built by", input$Manufacturer)) +
-      xlab("Highway miles per gallon")
+      xlab("Highway miles per gallon") +
+      theme_stata() +
+      theme(legend.position = "none")
   )
   output$bar <- renderPlot(
     ggplot(current.data.2()) +
-      geom_bar(aes(x = class)) +
+      geom_bar(aes(x = class, fill = class)) +
       ggtitle("Class distribution by selected manufacturer") +
-      xlab("Class")
+      xlab("Class") +
+      theme_stata() +
+      theme(legend.position = "none")
   )
 }
 
